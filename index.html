@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Anniversary</title>
+  <style>
+    /* Nền và căn giữa */
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fbe8eb; /* Nền hồng nhạt dễ thương */
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Container trái tim */
+    .heart-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      cursor: pointer;
+      transform: scale(1);
+      transition: transform 0.3s ease-in-out;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    /* Viền trái tim */
+    .heart-border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 300px;
+      background-color: transparent;
+      border: 8px solid #ff66b2;
+      clip-path: path("M150 30 C180 0, 270 0, 270 90 C270 180, 150 270, 150 270 C150 270, 30 180, 30 90 C30 0, 120 0, 150 30 Z");
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.7);
+    }
+
+    /* Phần lấp đầy với gradient dễ thương */
+    .fill {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 300px;
+      height: 0;
+      background: linear-gradient(45deg, #ffb3cc, #ff66b2);
+      clip-path: path("M150 30 C180 0, 270 0, 270 90 C270 180, 150 270, 150 270 C150 270, 30 180, 30 90 C30 0, 120 0, 150 30 Z");
+      transition: height 0.5s ease-in-out;
+    }
+
+    /* Hiệu ứng ảnh */
+    .image {
+      position: absolute;
+      width: 120px;
+      height: auto;
+      animation: float 6s linear infinite;
+    }
+
+    /* Keyframes cho ảnh chuyển động */
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg); /* Bay lên hết trang */
+      }
+    }
+
+    /* Chữ Anniversary */
+    .anniversary-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ff66b2;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      animation: sparkle 1.5s infinite alternate;
+    }
+
+    .anniversary-text.show {
+      opacity: 1;
+    }
+
+    /* Hiệu ứng phóng to trái tim khi hover */
+    .heart-container:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 30px rgba(255, 105, 180, 1), 0 0 40px rgba(255, 105, 180, 0.5);
+    }
+
+    /* Hiệu ứng bounce cho trái tim */
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      25% {
+        transform: translateY(-10px);
+      }
+      50% {
+        transform: translateY(0);
+      }
+      75% {
+        transform: translateY(-5px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    /* Hiệu ứng lấp lánh cho chữ Anniversary */
+    @keyframes sparkle {
+      0% {
+        text-shadow: 0 0 10px #ff66b2, 0 0 20px #ff66b2, 0 0 30px #ff66b2;
+      }
+      100% {
+        text-shadow: 0 0 20px #ff66b2, 0 0 30px #ff66b2, 0 0 40px #ff66b2;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Chữ Anniversary -->
+  <div class="anniversary-text" id="anniversaryText">Chúc bé yêu sinh nhật vvvv</div>
+
+  <!-- Trái tim -->
+  <div class="heart-container" onclick="fillHeart()">
+    <div class="fill" id="fill"></div>
+    <div class="heart-border"></div>
+  </div>
+
+  <script>
+    // Biến theo dõi mức lấp đầy
+    let fillLevel = 0;
+
+    function fillHeart() {
+      const fill = document.getElementById('fill');
+      const heartContainer = document.querySelector('.heart-container');
+      const anniversaryText = document.getElementById('anniversaryText');
+
+      // Tăng mức lấp đầy mỗi lần nhấp
+      fillLevel += 20; // Tăng 20% mỗi lần nhấp
+
+      // Cập nhật chiều cao phần lấp đầy
+      fill.style.height = `${fillLevel}%`;
+      fill.style.top = `${100 - fillLevel}%`;
+
+      // Khi lấp đầy 100%, tạo ảnh bay lên liên tục và hiển thị chữ
+      if (fillLevel >= 100) {
+        heartContainer.style.display = 'none';
+        anniversaryText.classList.add('show');
+        createImages();
+      }
+    }
+
+    function createImages() {
+      setInterval(() => {
+        // List of different image URLs
+        const imageUrls = [
+          'img/hihi.jpg', // Image 1
+          'img/hihii.jpg', // Image 2
+          
+        
+         
+        ];
+
+        // Randomly pick an image URL from the list
+        const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+
+        // Create a new image element
+        const img = document.createElement('img');
+        img.src = randomImageUrl; // Use the randomly chosen image
+        img.classList.add('image');
+
+        // Set a random position for the image
+        img.style.left = `${Math.random() * 100}vw`;
+        img.style.top = '100vh';
+
+        // Add the image to the body
+        document.body.appendChild(img);
+
+        // The image will continuously float upwards
+      }, 1000); // Create a new image every 1 second
+    }
+  </script>
+</body>
+</html>
